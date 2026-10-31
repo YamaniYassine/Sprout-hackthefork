@@ -59,8 +59,8 @@ def _format_row_for_prompt(row):
     )
 
 
-def _build_user_prompt(protein, meat_target, cooking, missing_notes, off_notes, ranked_levers):
-    parts = [f"Scenario: protein={protein}, meat_target={meat_target}, cooking={cooking}", ""]
+def _build_user_prompt(protein, meat_target, missing_notes, off_notes, ranked_levers):
+    parts = [f"Scenario: protein={protein}, meat_target={meat_target} (cooked meat, all cooking methods pooled)", ""]
 
     parts.append("MISSING MEAT-LIKE NOTES (meat markers absent from the plant profile):")
     if not missing_notes:
@@ -159,7 +159,7 @@ def _prune_invalid_citations(text, valid_citations):
     return pruned_text, any_pruned
 
 
-def generate_explanation(protein, meat_target, cooking, missing_notes, off_notes, ranked_levers):
+def generate_explanation(protein, meat_target, missing_notes, off_notes, ranked_levers):
     """
     Returns a dict:
         {
@@ -179,7 +179,7 @@ def generate_explanation(protein, meat_target, cooking, missing_notes, off_notes
             "has_evidence": False,
         }
 
-    user_prompt = _build_user_prompt(protein, meat_target, cooking, missing_notes, off_notes, ranked_levers)
+    user_prompt = _build_user_prompt(protein, meat_target, missing_notes, off_notes, ranked_levers)
     messages = [{"role": "user", "content": [{"text": user_prompt}]}]
 
     response = bedrock.converse(

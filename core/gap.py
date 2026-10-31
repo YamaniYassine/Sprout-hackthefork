@@ -74,7 +74,7 @@ def _distinct_papers(rows):
     return {r.get("file") for r in rows if r.get("file")}
 
 
-def build_meat_profile(rows, meat_target, cooking=None):
+def build_meat_profile(rows, meat_target):
     """
     Return the list of verified rows with role == meat_marker that are relevant
     to the meat target.
@@ -168,7 +168,7 @@ def compute_off_notes(plant_profile):
     return off_notes
 
 
-def analyze_gap(protein, meat_target, cooking=None, facts_rows=None, min_grade=None, papers_by_title=None):
+def analyze_gap(protein, meat_target, facts_rows=None, min_grade=None, papers_by_title=None):
     """
     Top-level deterministic gap analysis for a scenario.
 
@@ -193,7 +193,7 @@ def analyze_gap(protein, meat_target, cooking=None, facts_rows=None, min_grade=N
 
         rows = [r for r in rows if _passes_grade(r)]
 
-    meat_profile = build_meat_profile(rows, meat_target, cooking)
+    meat_profile = build_meat_profile(rows, meat_target)
     plant_profile = build_plant_profile(rows, protein)
     missing_notes = compute_missing_notes(meat_profile, plant_profile)
     off_notes = compute_off_notes(plant_profile)

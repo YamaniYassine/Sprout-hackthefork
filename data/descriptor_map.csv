@@ -1,0 +1,42 @@
+raw_descriptor_keyword,family
+beany,beany
+bean,beany
+bean-like,beany
+bean flavour,beany
+bean odor,beany
+beany off-flavor,beany
+beany off-flavors,beany
+green,green/grassy
+grassy,green/grassy
+green-bean,green/grassy
+fresh,green/grassy
+cardboard,green/grassy
+fatty,fatty/rancid
+fat,fatty/rancid
+rancid,fatty/rancid
+hay-like,fatty/rancid
+fried,fatty/rancid
+soap,fatty/rancid
+soap-like,fatty/rancid
+mushroom,mushroom/earthy
+earthy,mushroom/earthy
+sulfurous,sulfurous
+sulfur,sulfurous
+onion,sulfurous
+garlic,sulfurous
+pungent,sulfurous
+bitter,bitter/astringent
+astringent,bitter/astringent
+odour-active,other off-note
+off-flavor,other off-note
+off-odor,other off-note
+off-note,other off-note
+peculiar flavor,other off-note
+pea,other off-note
+meaty,meaty
+meaty aroma,meaty
+roasted,roasted
+nutty,roasted
+sweet,sweet/caramel
+caramel,sweet/caramel
+improved flavor,other meat note

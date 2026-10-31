@@ -74,14 +74,22 @@ CLEAN_LABEL_PENALTY = {0: 0.0, 1: 0.5, 2: 1.0}
 # --- Data origin labels shown in the UI ---
 ORIGIN_SOURCED = "sourced"
 ORIGIN_MODEL_EXTRACTED = "model-extracted"
+ORIGIN_SOURCED_COMPUTED = "sourced-computed"  # e.g. OAV computed from two sourced numbers
 ORIGIN_ASSUMED = "assumed"
 ORIGIN_SYNTHETIC = "synthetic"
 
-# --- Demo scenarios (3 proteins x 2 targets, grilled/cooked) ---
+# --- Additional mapping files for core/present.py (v2: no cooking state) ---
+DESCRIPTOR_MAP_CSV = os.path.join(DATA_DIR, "descriptor_map.csv")
+GENERIC_TERMS_TXT = os.path.join(DATA_DIR, "generic_terms.txt")
+SYNONYMS_CSV = os.path.join(DATA_DIR, "synonyms.csv")
+
+# --- Scenarios: 3 proteins x 2 targets, no cooking state (v2) ---
+# The analysis pools cooked-meat evidence across all cooking methods found in
+# the corpus; this is stated explicitly in the Limits box.
 PROTEINS = ["pea", "soy", "faba"]
 MEAT_TARGETS = ["beef burger", "chicken"]
 DEMO_SCENARIOS = [
-    {"protein": "pea", "meat_target": "beef burger", "cooking": "grilled"},
-    {"protein": "soy", "meat_target": "chicken", "cooking": "grilled"},
-    {"protein": "faba", "meat_target": "beef burger", "cooking": "grilled"},
+    {"protein": p, "meat_target": m}
+    for p in PROTEINS
+    for m in MEAT_TARGETS
 ]

@@ -35,7 +35,6 @@ st.sidebar.caption("Plant-based flavor gap analysis, literature-based.")
 
 protein = st.sidebar.selectbox("Plant protein", config.PROTEINS, index=0)
 meat_target = st.sidebar.selectbox("Meat target", config.MEAT_TARGETS, index=0)
-cooking = st.sidebar.selectbox("Cooking state", ["grilled", "cooked", "raw"], index=0)
 
 st.sidebar.divider()
 only_grade_2plus = st.sidebar.toggle("Only papers with grade >= 2", value=False)
@@ -46,11 +45,11 @@ run_live = st.sidebar.button("Run live (ignore precomputed cache)")
 
 min_grade = 2 if only_grade_2plus else None
 
-st.title(f"{protein.capitalize()} -> {meat_target} ({cooking})")
+st.title(f"{protein.capitalize()} -> {meat_target} (cooked meat, all cooking methods pooled)")
 
 with st.spinner("Running analysis..."):
     result = pipeline.run(
-        protein, meat_target, cooking,
+        protein, meat_target,
         min_grade=min_grade, exclude_e_numbers=exclude_e_numbers,
         force_live=run_live,
     )

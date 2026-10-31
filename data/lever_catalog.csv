@@ -1,13 +1,22 @@
-lever,type,plant_only,cost_tier,clean_label,notes,origin
-yeast extract,ingredient,True,low,1,"Common umami/meaty booster; widely used, consumer-recognizable but not a plain food name.",assumed
-xylose + cysteine Maillard reaction,process,True,medium,1,"Process flavor: D-xylose + L-cysteine heated to build meaty/roasted notes via Maillard reaction.",assumed
-lactic acid bacteria fermentation,process,True,low,0,"Fermentation to reduce beany/off-notes; very clean-label friendly (just 'fermented').",assumed
-beta-cyclodextrin,ingredient,True,medium,2,"Encapsulates/masks off-flavor volatiles; reads as an additive on a label.",assumed
-steam stripping / deodorization,process,True,medium,0,"Physical removal of volatile off-notes from the protein isolate before use.",assumed
-supercritical CO2 extraction,process,True,high,0,"Removes lipids/off-flavor volatiles; expensive equipment, but clean-label (no residual solvent).",assumed
-ethanol washing,process,True,medium,0,"Washes out polar off-flavor compounds (phenolics, saponins) from protein isolate.",assumed
-lipoxygenase-null soy varieties,sourcing,True,medium,0,"Non-GMO breeding selection that reduces hexanal formation at the source.",assumed
-mushroom extract,ingredient,True,low,1,"Adds umami/meaty depth; natural extract, moderately clean-label.",assumed
-onion/garlic powder,ingredient,True,low,0,"Classic masking ingredient; fully clean-label, consumer-recognizable.",assumed
-smoked paprika,ingredient,True,low,0,"Adds roasted/smoky notes that overlap with meaty Maillard descriptors; clean-label.",assumed
-plant oils (sunflower/coconut),ingredient,True,low,0,"Adds fatty mouthfeel/juiciness; fully clean-label.",assumed
+lever,type,plant_only,cost_tier,clean_label,notes,origin,aliases
+yeast extract,ingredient,True,low,1,"Common umami/meaty booster; widely used, consumer-recognizable but not a plain food name.",assumed,yeast extract
+xylose + cysteine Maillard reaction,process,True,medium,1,"Process flavor: D-xylose + L-cysteine heated to build meaty/roasted notes via Maillard reaction.",assumed,xylose;cysteine;maillard;d-lc;d-lm;reaction flavor;methionine;cysteine addition;xylose addition;precursor system
+lactic acid bacteria fermentation,process,True,low,0,"Fermentation to reduce beany/off-notes; very clean-label friendly (just 'fermented').",assumed,lactic acid bacteria;lactobacillus;lactiplantibacillus;fermentation;fermented;sequential fermentation;lactic fermentation
+beta-cyclodextrin,ingredient,True,medium,2,"Encapsulates/masks off-flavor volatiles; reads as an additive on a label.",assumed,cyclodextrin;β-cd;beta-cyclodextrin;cgt;cyclodextrin glycosyltransferase;ß-cyclodextrin
+steam stripping / deodorization,process,True,medium,0,"Physical removal of volatile off-notes from the protein isolate before use.",assumed,steam stripping;deodorization;deodorisation
+supercritical CO2 extraction,process,True,high,0,"Removes lipids/off-flavor volatiles; expensive equipment, but clean-label (no residual solvent).",assumed,supercritical co2;supercritical carbon dioxide;scco2;sc-co2
+ethanol washing,process,True,medium,0,"Washes out polar off-flavor compounds (phenolics, saponins) from protein isolate.",assumed,ethanol wash;ethanol extraction;ethanol
+lipoxygenase-null soy varieties,sourcing,True,medium,0,"Non-GMO breeding selection that reduces hexanal formation at the source.",assumed,lipoxygenase-null;lox-null;lipoxygenase null;lox activity;crispr knockout of pslox2;non-thermal inactivation of lox;lox
+mushroom extract,ingredient,True,low,1,"Adds umami/meaty depth; natural extract, moderately clean-label.",assumed,mushroom extract;mushroom
+onion/garlic powder,ingredient,True,low,0,"Classic masking ingredient; fully clean-label, consumer-recognizable.",assumed,onion;garlic;onion and garlic
+smoked paprika,ingredient,True,low,0,"Adds roasted/smoky notes that overlap with meaty Maillard descriptors; clean-label.",assumed,smoked paprika;paprika;smoke;curry spice;curry spicing
+plant oils (sunflower/coconut),ingredient,True,low,0,"Adds fatty mouthfeel/juiciness; fully clean-label.",assumed,sunflower oil;coconut oil;plant oil;oleogel;orange oil;frying in oil
+tannase / low-tannin breeding,process,True,medium,0,"Enzymatic tannin hydrolysis or selecting low-tannin faba genotypes to reduce astringency at the source.",assumed,tannase;low-tannin;white-flowered genotype;catechol-dioxygenase;dioxygenase
+high pressure processing,process,True,high,0,"Non-thermal physical process that can reduce off-flavor precursor activity.",assumed,high pressure processing;hpp
+enzymatic / amygdalin hydrolysis,process,True,medium,0,"Enzymatic hydrolysis step (e.g. amygdalin breakdown) used to reduce specific off-flavor precursors.",assumed,amygdalin hydrolysis;enzymatic treatment;tannase hydrolysis
+texturization processing,process,True,medium,0,"Extrusion/texturization step that can also drive off-volatile loss and flavor development.",assumed,texturization processing;texturization
+microbial transglutaminase,ingredient,True,medium,1,"Microbial (non-animal) enzyme used for protein structuring; plant-compatible.",assumed,microbial transglutaminase;mtgase
+dextran coating/encapsulation,ingredient,True,medium,2,"Polysaccharide (microbial fermentation-derived) used to encapsulate/mask off-flavor volatiles.",assumed,dextran
+dehulling / soaking / heat treatment,process,True,low,0,"Simple mechanical/thermal pre-processing (dehulling, soaking, blanching, heat treatment) that reduces off-flavor precursor levels before protein extraction.",assumed,dehulling;soaking;soaking and blanching;heat treatment;heating;blanching
+herb and spice extracts (rosemary/thyme),ingredient,True,low,0,"Natural herb extracts used to mask off-notes; clean-label.",assumed,rosemary extract;thyme extract;spice masking;spices and natural extracts
+genetic breeding for low off-flavor traits,sourcing,True,medium,0,"Conventional breeding selection (non-GMO) for genotypes with naturally lower off-flavor precursor content.",assumed,genetic breeding

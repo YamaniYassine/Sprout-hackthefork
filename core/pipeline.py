@@ -1,11 +1,14 @@
 """
 core/pipeline.py
 
-Top-level orchestration: given a scenario (protein, meat_target, cooking),
-either load a precomputed result from data/scenarios/<id>.json (fast demo,
-no Bedrock calls) or run the full live pipeline:
+Top-level orchestration: given a scenario (protein, meat_target), either
+load a precomputed result from data/scenarios/<id>.json (fast demo, no
+Bedrock calls) or run the full live pipeline:
 
     retrieve -> extract -> verify -> facts (append) -> gap -> rank -> explain
+
+v2: no cooking-state input. The analysis pools cooked-meat evidence across
+all cooking methods found in the corpus (see core/retrieve.py).
 
 Returns a single dict the UI can render directly.
 """
@@ -17,14 +20,14 @@ import os
 from core import bedrock, config, extract, explain, facts as facts_module, gap, rank, retrieve, verify
 
 
-def scenario_id(protein, meat_target, cooking):
+def scenario_id(protein, meat_target):
     """Build the data/scenarios/<id>.json file name for a scenario."""
     safe_meat = meat_target.replace(" ", "_")
-    return f"{protein}__{safe_meat}__{cooking}"
+    return f"{protein}__{safe_meat}"
 
 
-def scenario_path(protein, meat_target, cooking):
-    return os.path.join(config.SCENARIOS_DIR, f"{scenario_id(protein, meat_target, cooking)}.json")
+def scenario_path(protein, meat_target):
+    return os.path.join(config.SCENARIOS_DIR, f"{scenario_id(protein, meat_target)}.json")
 
 
 def load_papers_by_title():
@@ -35,10 +38,10 @@ def load_papers_by_title():
         return {row["_document_title"]: row for row in reader}
 
 
-def _serialize_result(protein, meat_target, cooking, result, ranked, unmapped, explanation, rejection_stats):
+def _serialize_result(protein, meat_target, result, ranked, unmapped, explanation, rejection_stats):
     """Build the JSON-serializable dict saved to data/scenarios/<id>.json and returned to the UI."""
     return {
-        "scenario": {"protein": protein, "meat_target": meat_target, "cooking": cooking},
+        "scenario": {"protein": protein, "meat_target": meat_target},
         "missing_notes": result["missing_notes"],
         "off_notes": result["off_notes"],
         "ranked_levers": ranked,
@@ -48,7 +51,7 @@ def _serialize_result(protein, meat_target, cooking, result, ranked, unmapped, e
     }
 
 
-def run_live(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=False, top_n_chunks=None):
+def run_live(protein, meat_target, min_grade=None, exclude_e_numbers=False, top_n_chunks=None):
     """
     Run the full live pipeline for a scenario: retrieve -> extract -> verify ->
     append to facts.csv -> gap -> rank -> explain.
@@ -56,9 +59,9 @@ def run_live(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=Fa
     top_n_chunks: optionally cap how many retrieved chunks go through extraction
         (keeps demo runs fast/cheap; None = use all deduplicated chunks).
 
-    Returns the same shaped dict as run_from_cache_or_live().
+    Returns the same shaped dict as run().
     """
-    chunks = retrieve.retrieve_for_scenario(protein, meat_target, cooking)
+    chunks = retrieve.retrieve_for_scenario(protein, meat_target)
     if top_n_chunks is not None:
         chunks = chunks[:top_n_chunks]
 
@@ -80,7 +83,7 @@ def run_live(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=Fa
     papers_by_title = load_papers_by_title()
 
     gap_result = gap.analyze_gap(
-        protein, meat_target, cooking,
+        protein, meat_target,
         facts_rows=all_facts, min_grade=min_grade, papers_by_title=papers_by_title,
     )
     ranked, unmapped = rank.rank_levers(
@@ -88,29 +91,21 @@ def run_live(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=Fa
         papers_by_title=papers_by_title, exclude_e_numbers=exclude_e_numbers,
     )
     explanation = explain.generate_explanation(
-        protein, meat_target, cooking, gap_result["missing_notes"], gap_result["off_notes"], ranked,
+        protein, meat_target, gap_result["missing_notes"], gap_result["off_notes"], ranked,
     )
 
-    return _serialize_result(protein, meat_target, cooking, gap_result, ranked, unmapped, explanation, rejection_stats)
+    return _serialize_result(protein, meat_target, gap_result, ranked, unmapped, explanation, rejection_stats)
 
 
-def run(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=False, force_live=False, top_n_chunks=None):
+def run(protein, meat_target, min_grade=None, exclude_e_numbers=False, force_live=False, top_n_chunks=None):
     """
-    Main entry point used by the UI.
+    Main entry point used by the UI/API.
 
     - If a precomputed scenario file exists in data/scenarios/ and force_live
       is False, load and return it instantly (no Bedrock calls).
     - Otherwise run the live pipeline.
-
-    Note: min_grade / exclude_e_numbers are UI-side filters applied via
-    run_live or applied to a precomputed result's ranked list on read; the
-    precomputed JSON stores the unfiltered gap/rank output computed at
-    build_scenarios.py time with default toggles, so toggling filters in the
-    UI after loading a precomputed scenario will only be exact if the demo
-    scenario was built with those same toggles. For a demo, force_live=True
-    (via the "Run live" button) always reflects current toggles exactly.
     """
-    path = scenario_path(protein, meat_target, cooking)
+    path = scenario_path(protein, meat_target)
 
     if not force_live and os.path.exists(path):
         with open(path, "r") as f:
@@ -119,7 +114,7 @@ def run(protein, meat_target, cooking, min_grade=None, exclude_e_numbers=False, 
         return result
 
     result = run_live(
-        protein, meat_target, cooking,
+        protein, meat_target,
         min_grade=min_grade, exclude_e_numbers=exclude_e_numbers, top_n_chunks=top_n_chunks,
     )
     result["loaded_from_cache_file"] = False

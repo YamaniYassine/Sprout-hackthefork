@@ -24,27 +24,6 @@ from collections import defaultdict
 
 from core import config
 
-# Keyword lists used to map free-text lever mentions to catalog entries.
-# Keys must match the "lever" column in data/lever_catalog.csv exactly.
-LEVER_KEYWORD_MAP = {
-    "yeast extract": ["yeast extract"],
-    "xylose + cysteine Maillard reaction": [
-        "xylose", "cysteine", "maillard", "d-lc", "d-lm", "methionine",
-    ],
-    "lactic acid bacteria fermentation": [
-        "lactic acid bacteria", "l. plantarum", "lactobacillus", "fermentation", "fermented",
-    ],
-    "beta-cyclodextrin": ["cyclodextrin", "cgt", "cgtase"],
-    "steam stripping / deodorization": ["steam stripping", "deodorization", "deodorisation"],
-    "supercritical CO2 extraction": ["supercritical co2", "supercritical carbon dioxide", "scco2"],
-    "ethanol washing": ["ethanol wash", "ethanol extraction"],
-    "lipoxygenase-null soy varieties": ["lipoxygenase-null", "lox-null", "lipoxygenase null"],
-    "mushroom extract": ["mushroom extract", "mushroom"],
-    "onion/garlic powder": ["onion", "garlic"],
-    "smoked paprika": ["smoked paprika", "paprika", "smoke"],
-    "plant oils (sunflower/coconut)": ["sunflower oil", "coconut oil", "plant oil", "oleogel"],
-}
-
 
 def load_lever_catalog(path=None):
     """Returns dict lever_name -> catalog row dict."""
@@ -55,15 +34,28 @@ def load_lever_catalog(path=None):
     return {row["lever"]: row for row in rows}
 
 
-def match_lever_to_catalog(lever_text):
+def _catalog_alias_map(catalog):
+    """Build dict catalog_lever_name -> list of lowercased alias keywords, from the 'aliases' column."""
+    alias_map = {}
+    for name, row in catalog.items():
+        aliases_str = row.get("aliases", "") or name
+        keywords = [a.strip().lower() for a in aliases_str.split(";") if a.strip()]
+        alias_map[name] = keywords
+    return alias_map
+
+
+def match_lever_to_catalog(lever_text, catalog=None):
     """
     Map a free-text lever mention (from facts.csv) to a catalog lever name by
-    keyword. Returns the catalog lever name, or None if unmapped.
+    matching against the catalog's "aliases" column (semicolon-separated
+    keywords). Returns the catalog lever name, or None if unmapped.
     """
     if not lever_text or not lever_text.strip():
         return None
+    catalog = catalog or load_lever_catalog()
+    alias_map = _catalog_alias_map(catalog)
     text_lower = lever_text.lower()
-    for catalog_name, keywords in LEVER_KEYWORD_MAP.items():
+    for catalog_name, keywords in alias_map.items():
         if any(kw in text_lower for kw in keywords):
             return catalog_name
     return None
@@ -115,7 +107,7 @@ def rank_levers(facts_rows, missing_notes, off_notes, papers_by_title=None,
         lever_text = row.get("lever", "")
         if not lever_text or not lever_text.strip():
             continue
-        catalog_name = match_lever_to_catalog(lever_text)
+        catalog_name = match_lever_to_catalog(lever_text, catalog=catalog)
         if catalog_name is None:
             unmapped_set.add(lever_text.strip())
             continue
