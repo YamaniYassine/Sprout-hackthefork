@@ -1,0 +1,8 @@
+data/pdfs/
+data/text/
+data/cache/
+.venv/
+.env
+__pycache__/
+*.pyc
+.DS_Store
