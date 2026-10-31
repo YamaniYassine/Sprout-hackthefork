@@ -6,3 +6,7 @@ data/cache/
 __pycache__/
 *.pyc
 .DS_Store
+
+# frontend
+web/node_modules/
+web/dist/

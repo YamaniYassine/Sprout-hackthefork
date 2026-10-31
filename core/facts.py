@@ -22,10 +22,20 @@ FIELDNAMES = [
 ]
 
 
+def _normalize_page(page):
+    """Normalize a page value to a consistent type for dedup comparison (CSV round-trips give strings, fresh rows may give floats)."""
+    if page is None or page == "":
+        return None
+    try:
+        return float(page)
+    except (TypeError, ValueError):
+        return str(page)
+
+
 def _dedup_key(row):
     return (
         row.get("file"),
-        row.get("page"),
+        _normalize_page(row.get("page")),
         (row.get("compound") or "").strip().lower(),
         (row.get("descriptor") or "").strip().lower(),
         row.get("role"),

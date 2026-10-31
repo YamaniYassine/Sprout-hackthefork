@@ -335,10 +335,13 @@ def _group_molecules(rows, descriptor_map, synonyms, generic_terms, is_meat_side
         evidence_score, n_papers = _evidence_score(group_rows, papers_by_title)
 
         evidence_ids = []
+        seen_evidence_ids = set()
         for r in group_rows:
             record = build_evidence_record(r, papers_by_title)
             evidence_store[record["id"]] = record
-            evidence_ids.append(record["id"])
+            if record["id"] not in seen_evidence_ids:
+                seen_evidence_ids.add(record["id"])
+                evidence_ids.append(record["id"])
 
         pubchem_cid = None
         for r in group_rows:
@@ -486,11 +489,14 @@ def build_levers(ranked_levers_raw, unmapped_count, evidence_store, papers_by_ti
         adds = set()
         stated_dose = None
         evidence_ids = []
+        seen_evidence_ids = set()
 
         for row in matched_rows:
             record = build_evidence_record(row, papers_by_title)
             evidence_store[record["id"]] = record
-            evidence_ids.append(record["id"])
+            if record["id"] not in seen_evidence_ids:
+                seen_evidence_ids.add(record["id"])
+                evidence_ids.append(record["id"])
 
             compound = canonical_molecule_name(row.get("compound", ""), synonyms)
             role = row.get("role")

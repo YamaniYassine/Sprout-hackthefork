@@ -97,13 +97,30 @@ def run_live(protein, meat_target, min_grade=None, exclude_e_numbers=False, top_
     return _serialize_result(protein, meat_target, gap_result, ranked, unmapped, explanation, rejection_stats)
 
 
-def run(protein, meat_target, min_grade=None, exclude_e_numbers=False, force_live=False, top_n_chunks=None):
+def save_scenario(protein, meat_target, result):
+    """
+    Persist a run_live() result dict to data/scenarios/<id>.json. The
+    "loaded_from_cache_file" marker key (if present) is stripped before
+    saving, since that key is set by run() on read, not meant to be stored.
+    """
+    os.makedirs(config.SCENARIOS_DIR, exist_ok=True)
+    to_save = {k: v for k, v in result.items() if k != "loaded_from_cache_file"}
+    path = scenario_path(protein, meat_target)
+    with open(path, "w") as f:
+        json.dump(to_save, f, indent=2)
+    return path
+
+
+def run(protein, meat_target, min_grade=None, exclude_e_numbers=False, force_live=False,
+        top_n_chunks=None, persist=False):
     """
     Main entry point used by the UI/API.
 
     - If a precomputed scenario file exists in data/scenarios/ and force_live
       is False, load and return it instantly (no Bedrock calls).
     - Otherwise run the live pipeline.
+    - If persist=True and the live pipeline ran, save the result to
+      data/scenarios/<id>.json so the next GET loads it instantly.
     """
     path = scenario_path(protein, meat_target)
 
@@ -118,4 +135,8 @@ def run(protein, meat_target, min_grade=None, exclude_e_numbers=False, force_liv
         min_grade=min_grade, exclude_e_numbers=exclude_e_numbers, top_n_chunks=top_n_chunks,
     )
     result["loaded_from_cache_file"] = False
+
+    if persist:
+        save_scenario(protein, meat_target, result)
+
     return result

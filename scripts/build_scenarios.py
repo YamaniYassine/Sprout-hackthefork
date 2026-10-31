@@ -28,10 +28,7 @@ def build_all_scenarios(top_n_chunks=None):
         print(f"Building scenario: {protein} -> {meat_target}")
 
         result = pipeline.run_live(protein, meat_target, top_n_chunks=top_n_chunks)
-
-        path = pipeline.scenario_path(protein, meat_target)
-        with open(path, "w") as f:
-            json.dump(result, f, indent=2)
+        path = pipeline.save_scenario(protein, meat_target, result)
 
         print(f"  -> saved {path}")
         print(f"  rejection_stats: {result['rejection_stats']}")
