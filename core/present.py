@@ -625,7 +625,7 @@ def predict_co2_impact(kind, cost_tier):
 
     band = "low" if score < 35 else "medium" if score < 75 else "high"
     rationale = (
-        f"Predicted, not sourced: {kind_phrase} with {cost_tier} assumed cost tier "
+        f"Predicted: {kind_phrase} with {cost_tier} assumed cost tier "
         f"is estimated as {band} relative footprint."
     )
 
