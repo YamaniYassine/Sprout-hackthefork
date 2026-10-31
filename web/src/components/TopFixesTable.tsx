@@ -4,6 +4,7 @@ import { buildTopPairings } from "../lib/pairings";
 import { CLEAN_LABEL_COLORS, co2BandColor, familyColor } from "../theme";
 import { EmptyState } from "./Skeleton";
 import EvidenceQuote from "./EvidenceQuote";
+import MoreInfoPanel from "./MoreInfoPanel";
 
 const MAX_QUOTES_SHOWN = 2;
 
@@ -209,6 +210,8 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                           )}
                         </div>
                       </div>
+
+                      <MoreInfoPanel analysis={analysis} />
                     </td>
                   </tr>
                 )}
