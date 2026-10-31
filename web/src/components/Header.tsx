@@ -56,7 +56,7 @@ export default function Header({
     <header className="border-b border-emerald-200 bg-gradient-to-r from-emerald-50 to-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-end justify-between gap-4">
         <div className="flex items-end gap-3">
-          <h1 className="text-2xl font-bold text-emerald-900">FlavorGap</h1>
+          <h1 className="text-2xl font-bold text-emerald-900">Sprout</h1>
           <span className="text-sm text-emerald-700 pb-0.5">
             Plant-based flavor gap analysis, literature-based
           </span>
