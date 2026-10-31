@@ -7,6 +7,7 @@ export type Origin =
   | "model-extracted"
   | "sourced-computed"
   | "assumed"
+  | "predicted"
   | "synthetic";
 
 export type Evidence = {
@@ -41,6 +42,12 @@ export type MissingNote = {
 
 export type LeverKind = "ingredient" | "process" | "sourcing" | "precursor";
 
+export type Co2Impact = {
+  score: number; // 0-100, higher = higher predicted relative footprint
+  rationale: string;
+  origin: "predicted";
+};
+
 export type Lever = {
   rank: number;
   name: string;
@@ -54,6 +61,7 @@ export type Lever = {
   adds: string[];
   stated_dose: { text: string; evidence_id: string } | null;
   evidence_ids: string[];
+  co2_impact: Co2Impact;
 };
 
 export type FamilyProfileRow = {

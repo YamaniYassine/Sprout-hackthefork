@@ -76,6 +76,7 @@ ORIGIN_SOURCED = "sourced"
 ORIGIN_MODEL_EXTRACTED = "model-extracted"
 ORIGIN_SOURCED_COMPUTED = "sourced-computed"  # e.g. OAV computed from two sourced numbers
 ORIGIN_ASSUMED = "assumed"
+ORIGIN_PREDICTED = "predicted"  # team heuristic/estimate, e.g. CO2 impact (not in the corpus)
 ORIGIN_SYNTHETIC = "synthetic"
 
 # --- Additional mapping files for core/present.py (v2: no cooking state) ---

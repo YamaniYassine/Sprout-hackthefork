@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
-import type { Analysis } from "../types";
+import type { Analysis, Co2Impact } from "../types";
 import { buildTopPairings } from "../lib/pairings";
-import { CLEAN_LABEL_COLORS, familyColor } from "../theme";
+import { CLEAN_LABEL_COLORS, co2BandColor, familyColor } from "../theme";
 import { EmptyState } from "./Skeleton";
 import EvidenceQuote from "./EvidenceQuote";
 
@@ -16,6 +16,19 @@ function CleanLabelChip({ tier }: { tier: 0 | 1 | 2 }) {
     >
       {c.label}
       <span className="text-[10px] opacity-70">(assumed)</span>
+    </span>
+  );
+}
+
+function Co2Chip({ impact }: { impact: Co2Impact }) {
+  const c = co2BandColor(impact.score);
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ backgroundColor: c.bg, color: c.text }}
+    >
+      {c.label} impact ({impact.score}/100)
+      <span className="text-[10px] opacity-70">(predicted)</span>
     </span>
   );
 }
@@ -136,7 +149,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                   <tr className="bg-emerald-50/30 border-t border-emerald-100">
                     <td></td>
                     <td colSpan={4} className="px-5 py-4">
-                      <div className="grid grid-cols-2 gap-5">
+                      <div className="grid grid-cols-3 gap-5">
                         <div>
                           <div className="text-xs font-semibold text-emerald-800 mb-1.5">
                             Why this molecule is flagged
@@ -172,6 +185,26 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                           ) : (
                             <span className="text-slate-400 italic text-xs">
                               No ranked lever addresses this molecule yet.
+                            </span>
+                          )}
+                        </div>
+
+                        <div>
+                          <div className="text-xs font-semibold text-emerald-800 mb-1.5">
+                            CO2 impact
+                          </div>
+                          {lever ? (
+                            <div className="flex flex-col gap-1.5">
+                              <div>
+                                <Co2Chip impact={lever.co2_impact} />
+                              </div>
+                              <p className="text-xs text-emerald-700/80 italic">
+                                {lever.co2_impact.rationale}
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-slate-400 italic text-xs">
+                              No ranked lever to estimate yet.
                             </span>
                           )}
                         </div>

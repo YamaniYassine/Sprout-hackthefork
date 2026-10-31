@@ -42,8 +42,16 @@ export const ORIGIN_COLORS: Record<string, { bg: string; text: string }> = {
   "model-extracted": { bg: "#e0e7ff", text: "#4338ca" }, // indigo
   "sourced-computed": { bg: "#ccfbf1", text: "#0f766e" }, // teal
   assumed: { bg: "#ffedd5", text: "#c2410c" }, // orange
+  predicted: { bg: "#fae8ff", text: "#a21caf" }, // fuchsia -- distinct from assumed, signals "team estimate"
   synthetic: { bg: "#e5e7eb", text: "#4b5563" }, // grey
 };
+
+// CO2 impact score bands (0-100, higher = higher predicted relative footprint)
+export function co2BandColor(score: number): { bg: string; text: string; label: string } {
+  if (score < 35) return { bg: "#dcfce7", text: "#15803d", label: "low" };
+  if (score < 75) return { bg: "#fef9c3", text: "#854d0e", label: "medium" };
+  return { bg: "#fee2e2", text: "#b91c1c", label: "high" };
+}
 
 export function originColor(origin: string) {
   return ORIGIN_COLORS[origin] ?? ORIGIN_COLORS.synthetic;

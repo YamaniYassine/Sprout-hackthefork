@@ -545,6 +545,7 @@ def build_levers(ranked_levers_raw, unmapped_count, evidence_store, papers_by_ti
             "adds": sorted(adds),
             "stated_dose": stated_dose,
             "evidence_ids": evidence_ids,
+            "co2_impact": predict_co2_impact(kind, raw["cost_tier"]),
         })
 
     return levers
@@ -578,6 +579,57 @@ def build_family_profile(off_notes, missing_notes):
 
 
 # --- Formulas + limits --------------------------------------------------------
+
+
+# --- CO2 impact (predicted, not sourced from the literature) ---------------
+#
+# The corpus has no per-lever carbon-footprint data (papers only mention
+# global animal-vs-plant agriculture statistics, not lever-specific
+# figures), so this is NOT extracted from papers. It is a simple, team-made
+# heuristic for illustration purposes only, labeled origin="predicted" (not
+# "assumed", which is reserved for the cost_tier/clean_label catalog
+# columns) so the UI and the pitch can caveat it clearly as a prediction,
+# not a sourced fact.
+#
+# Heuristic: a lever's relative CO2 footprint is driven mostly by whether it
+# is a sourcing/breeding change (lowest: happens once upstream, no added
+# processing), a simple ingredient/precursor addition (low-medium: some
+# extra agriculture/transport), or a process step (medium-high: added
+# energy use in manufacturing) -- scaled further by its assumed cost tier,
+# used here as a rough proxy for resource/energy intensity.
+_CO2_BASE_BY_KIND = {
+    "sourcing": 10,
+    "precursor": 25,
+    "ingredient": 35,
+    "process": 55,
+}
+_CO2_MULTIPLIER_BY_COST_TIER = {"low": 1.0, "medium": 1.4, "high": 1.9}
+
+
+def predict_co2_impact(kind, cost_tier):
+    """
+    Returns {"score": int 0-100, "rationale": str, "origin": "predicted"}.
+    Higher score = higher relative predicted CO2 footprint. This is a
+    team heuristic for the pitch, not a literature-sourced number.
+    """
+    base = _CO2_BASE_BY_KIND.get(kind, 35)
+    multiplier = _CO2_MULTIPLIER_BY_COST_TIER.get(cost_tier, 1.0)
+    score = min(100, round(base * multiplier))
+
+    kind_phrase = {
+        "sourcing": "a one-time upstream sourcing/breeding change",
+        "precursor": "a simple precursor addition",
+        "ingredient": "an added ingredient",
+        "process": "an added processing step",
+    }.get(kind, "this lever")
+
+    band = "low" if score < 35 else "medium" if score < 75 else "high"
+    rationale = (
+        f"Predicted, not sourced: {kind_phrase} with {cost_tier} assumed cost tier "
+        f"is estimated as {band} relative footprint."
+    )
+
+    return {"score": score, "rationale": rationale, "origin": config.ORIGIN_PREDICTED}
 
 
 def build_formulas():
