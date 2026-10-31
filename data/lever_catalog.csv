@@ -1,0 +1,13 @@
+lever,type,plant_only,cost_tier,clean_label,notes,origin
+yeast extract,ingredient,True,low,1,"Common umami/meaty booster; widely used, consumer-recognizable but not a plain food name.",assumed
+xylose + cysteine Maillard reaction,process,True,medium,1,"Process flavor: D-xylose + L-cysteine heated to build meaty/roasted notes via Maillard reaction.",assumed
+lactic acid bacteria fermentation,process,True,low,0,"Fermentation to reduce beany/off-notes; very clean-label friendly (just 'fermented').",assumed
+beta-cyclodextrin,ingredient,True,medium,2,"Encapsulates/masks off-flavor volatiles; reads as an additive on a label.",assumed
+steam stripping / deodorization,process,True,medium,0,"Physical removal of volatile off-notes from the protein isolate before use.",assumed
+supercritical CO2 extraction,process,True,high,0,"Removes lipids/off-flavor volatiles; expensive equipment, but clean-label (no residual solvent).",assumed
+ethanol washing,process,True,medium,0,"Washes out polar off-flavor compounds (phenolics, saponins) from protein isolate.",assumed
+lipoxygenase-null soy varieties,sourcing,True,medium,0,"Non-GMO breeding selection that reduces hexanal formation at the source.",assumed
+mushroom extract,ingredient,True,low,1,"Adds umami/meaty depth; natural extract, moderately clean-label.",assumed
+onion/garlic powder,ingredient,True,low,0,"Classic masking ingredient; fully clean-label, consumer-recognizable.",assumed
+smoked paprika,ingredient,True,low,0,"Adds roasted/smoky notes that overlap with meaty Maillard descriptors; clean-label.",assumed
+plant oils (sunflower/coconut),ingredient,True,low,0,"Adds fatty mouthfeel/juiciness; fully clean-label.",assumed
