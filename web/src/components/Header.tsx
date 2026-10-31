@@ -11,7 +11,7 @@ type HeaderProps = {
   source: "precomputed" | "live" | null;
 };
 
-function SegmentedControl({
+function Dropdown({
   label,
   options,
   value,
@@ -23,26 +23,20 @@ function SegmentedControl({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-slate-500">{label}</span>
-      <div className="inline-flex rounded-lg border border-slate-300 bg-white p-0.5">
+    <label className="flex flex-col gap-1">
+      <span className="text-xs font-medium text-emerald-900">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="min-w-[160px] rounded-lg border border-emerald-300 bg-white px-3 py-2 text-sm font-medium text-emerald-950 capitalize shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+      >
         {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => onChange(opt)}
-            className={
-              "px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-colors " +
-              (value === opt
-                ? "bg-slate-900 text-white"
-                : "text-slate-600 hover:bg-slate-100")
-            }
-          >
+          <option key={opt} value={opt} className="capitalize">
             {opt}
-          </button>
+          </option>
         ))}
-      </div>
-    </div>
+      </select>
+    </label>
   );
 }
 
@@ -59,35 +53,25 @@ export default function Header({
   source,
 }: HeaderProps) {
   return (
-    <header className="border-b border-slate-200 bg-white">
+    <header className="border-b border-emerald-200 bg-gradient-to-r from-emerald-50 to-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-end justify-between gap-4">
         <div className="flex items-end gap-3">
-          <h1 className="text-2xl font-bold text-slate-900">FlavorGap</h1>
-          <span className="text-sm text-slate-500 pb-0.5">
+          <h1 className="text-2xl font-bold text-emerald-900">FlavorGap</h1>
+          <span className="text-sm text-emerald-700 pb-0.5">
             Plant-based flavor gap analysis, literature-based
           </span>
         </div>
 
         <div className="flex flex-wrap items-end gap-4">
-          <SegmentedControl
-            label="Protein"
-            options={proteins}
-            value={protein}
-            onChange={onProteinChange}
-          />
-          <SegmentedControl
-            label="Target"
-            options={targets}
-            value={target}
-            onChange={onTargetChange}
-          />
+          <Dropdown label="Plant protein" options={proteins} value={protein} onChange={onProteinChange} />
+          <Dropdown label="Meat target" options={targets} value={target} onChange={onTargetChange} />
 
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={onAnalyze}
               disabled={isLoading}
-              className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 transition-colors"
+              className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 disabled:opacity-50 transition-colors shadow-sm"
             >
               {isLoading ? "Analyzing..." : "Analyze"}
             </button>
@@ -95,7 +79,7 @@ export default function Header({
               type="button"
               onClick={onRunLive}
               disabled={isLoading}
-              className="px-3 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 disabled:opacity-50 transition-colors"
+              className="px-3 py-2 rounded-lg border border-emerald-300 text-emerald-800 text-sm font-medium hover:bg-emerald-50 disabled:opacity-50 transition-colors"
             >
               Run live
             </button>
@@ -107,7 +91,7 @@ export default function Header({
                 "px-2.5 py-1 rounded-full text-xs font-semibold " +
                 (source === "live"
                   ? "bg-amber-100 text-amber-800"
-                  : "bg-slate-100 text-slate-700")
+                  : "bg-emerald-100 text-emerald-800")
               }
             >
               {source}

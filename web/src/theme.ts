@@ -1,22 +1,36 @@
 // Single source of truth for colors used across the table, bar chart, radar
 // chart, and chips, so the same family/origin always renders the same color.
+// Overall palette is green-forward (plant-based product), per product direction.
+
+export const BRAND = {
+  50: "#f0fdf4",
+  100: "#dcfce7",
+  200: "#bbf7d0",
+  300: "#86efac",
+  400: "#4ade80",
+  500: "#22c55e",
+  600: "#16a34a",
+  700: "#15803d",
+  800: "#166534",
+  900: "#14532d",
+};
 
 export const FAMILY_COLORS: Record<string, string> = {
-  // off-note families
-  beany: "#a16207", // amber-700
-  "green/grassy": "#16a34a", // green-600
-  "fatty/rancid": "#b45309", // amber-800ish
-  "mushroom/earthy": "#78350f", // brown
+  // off-note families (green-forward palette, varied by hue/lightness for distinction)
+  beany: "#854d0e", // amber-800
+  "green/grassy": "#16a34a", // brand green-600
+  "fatty/rancid": "#a16207", // amber-700
+  "mushroom/earthy": "#57534e", // stone-600
   sulfurous: "#ca8a04", // yellow-700
-  "bitter/astringent": "#7c3aed", // violet-600
-  "other off-note": "#64748b", // slate-500
+  "bitter/astringent": "#6d28d9", // violet-700
+  "other off-note": "#6b7280", // gray-500
 
   // meat families
-  meaty: "#dc2626", // red-600
+  meaty: "#b91c1c", // red-700
   roasted: "#c2410c", // orange-700
   "fatty/fried": "#ea580c", // orange-600
-  "sweet/caramel": "#db2777", // pink-600
-  "other meat note": "#475569", // slate-600
+  "sweet/caramel": "#be185d", // pink-700
+  "other meat note": "#44403c", // stone-700
 };
 
 export function familyColor(family: string): string {
