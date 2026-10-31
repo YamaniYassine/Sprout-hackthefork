@@ -1,11 +1,24 @@
 import { Fragment, useState } from "react";
 import type { Analysis } from "../types";
 import { buildTopPairings } from "../lib/pairings";
-import { familyColor } from "../theme";
+import { CLEAN_LABEL_COLORS, familyColor } from "../theme";
 import { EmptyState } from "./Skeleton";
 import EvidenceQuote from "./EvidenceQuote";
 
 const MAX_QUOTES_SHOWN = 2;
+
+function CleanLabelChip({ tier }: { tier: 0 | 1 | 2 }) {
+  const c = CLEAN_LABEL_COLORS[tier];
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+      style={{ backgroundColor: c.bg, color: c.text }}
+    >
+      {c.label}
+      <span className="text-[10px] opacity-70">(assumed)</span>
+    </span>
+  );
+}
 
 function FamilyChip({ family }: { family: string }) {
   const color = familyColor(family);
@@ -129,6 +142,17 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                             Why this molecule is flagged
                           </div>
                           <div className="flex flex-col gap-1.5">
+                            <div className="text-xs text-emerald-700">
+                              <span className="font-medium">Odor activity value (OAV):</span>{" "}
+                              {offNote.oav !== null ? (
+                                <span className="font-mono">{offNote.oav}</span>
+                              ) : (
+                                <span className="text-slate-400 italic">
+                                  not available (needs a sourced concentration and odor threshold in
+                                  matching units)
+                                </span>
+                              )}
+                            </div>
                             {moleculeQuoteIds.map((id) => {
                               const ev = analysis.evidence[id];
                               return ev ? <EvidenceQuote key={id} evidence={ev} /> : null;
@@ -142,23 +166,9 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                           </div>
                           {lever ? (
                             <div className="flex flex-col gap-1.5">
-                              {lever.stated_dose && (
-                                <div className="text-xs text-emerald-900 bg-white border border-emerald-200 rounded-lg px-3 py-2">
-                                  <span className="font-semibold">Stated dose:</span> {lever.stated_dose.text}
-                                </div>
-                              )}
-                              {lever.removes_or_masks.length > 0 && (
-                                <div className="text-xs text-emerald-700">
-                                  <span className="font-medium">Also fixes:</span>{" "}
-                                  {lever.removes_or_masks.filter((m) => m !== offNote.molecule).join(", ") || "—"}
-                                </div>
-                              )}
-                              {lever.adds.length > 0 && (
-                                <div className="text-xs text-emerald-700">
-                                  <span className="font-medium">Adds meat-like notes:</span>{" "}
-                                  {lever.adds.join(", ")}
-                                </div>
-                              )}
+                              <div>
+                                <CleanLabelChip tier={lever.clean_label} />
+                              </div>
                               {leverQuoteIds.map((id) => {
                                 const ev = analysis.evidence[id];
                                 return ev ? <EvidenceQuote key={id} evidence={ev} /> : null;

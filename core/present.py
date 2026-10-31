@@ -170,7 +170,19 @@ def compute_oav(concentration_text, threshold_text):
     Compute concentration / threshold only when both are clean, single
     number+unit values in the SAME unit. Never invent or guess thresholds.
     Returns the OAV float, or None.
+
+    Rejects concentration_text == threshold_text (same raw string, even
+    before parsing): this pattern has been observed to come from extraction
+    errors (the model copying one value into both fields, e.g. when a quote
+    states a threshold but no concentration), not a genuine OAV=1 finding.
+    A real OAV of exactly 1.0 from two independently reported numbers is
+    possible but rare; this guard trades a small amount of recall for
+    ruling out the specific, confirmed failure mode seen in this corpus.
     """
+    if concentration_text is not None and threshold_text is not None:
+        if concentration_text.strip().lower() == threshold_text.strip().lower() and concentration_text.strip():
+            return None
+
     conc = _parse_clean_number_with_unit(concentration_text)
     thresh = _parse_clean_number_with_unit(threshold_text)
     if conc is None or thresh is None:
