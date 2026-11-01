@@ -372,7 +372,7 @@ def _group_molecules(rows, descriptor_map, synonyms, generic_terms, is_meat_side
                 oav = computed
                 break
 
-        display_name = group_rows[0].get("compound", canonical_name).strip()
+        display_name = tidy_display_name(group_rows[0].get("compound", canonical_name).strip())
 
         entry = {
             "molecule": display_name,
@@ -513,11 +513,11 @@ def build_levers(ranked_levers_raw, unmapped_count, evidence_store, papers_by_ti
             compound = canonical_molecule_name(row.get("compound", ""), synonyms)
             role = row.get("role")
             if role in ("off_note",) and compound in off_note_names:
-                removes_or_masks.add(row.get("compound").strip())
+                removes_or_masks.add(tidy_display_name(row.get("compound").strip()))
             elif role in ("meat_marker", "precursor") and compound in missing_note_names:
-                adds.add(row.get("compound").strip())
+                adds.add(tidy_display_name(row.get("compound").strip()))
             elif role == "masker" and compound in off_note_names:
-                removes_or_masks.add(row.get("compound").strip())
+                removes_or_masks.add(tidy_display_name(row.get("compound").strip()))
 
             if stated_dose is None:
                 dose_text = extract_stated_dose(row.get("quote", ""))
@@ -730,10 +730,32 @@ def present(protein, meat_target, pipeline_result, facts_rows, papers_by_title,
         "levers": levers,
         "unmapped_lever_mentions": len(pipeline_result.get("unmapped_levers", [])),
         "explanation": {
-            "text": explanation.get("text", ""),
+            "text": normalize_citation_pages(explanation.get("text", "")),
             "citations_valid": not explanation.get("citations_pruned", False),
         },
         "formulas": build_formulas(),
         "limits": build_limits(rejection_rate=rejection_rate, gold_precision=None),
         "evidence": evidence_store,
     }
+
+
+# --- Display polish (added after reviewing the rendered UI) -----------------
+
+_LEADING_CAP = re.compile(r"(^|[-\s])([A-Z])(?=[a-z])")
+_DECIMAL_PAGE = re.compile(r"(p\.\s*\d+)\.0+\b")
+
+
+def tidy_display_name(name):
+    """
+    Lower-case the capital that starts a word in a chemical name, so the table
+    does not show "hexanal" in one row and "Dimethyl disulfide" in the next
+    (extraction keeps whatever casing the paper used). Stereo descriptors and
+    acronyms are left alone: "(E)-2-octenal", "L-cysteine" and "PA1b peptide"
+    are unchanged because their capital is not followed by a lower-case letter.
+    """
+    return _LEADING_CAP.sub(lambda m: m.group(1) + m.group(2).lower(), name or "")
+
+
+def normalize_citation_pages(text):
+    """Turn "[file.pdf p.9.0]" into "[file.pdf p.9]": pages are integers."""
+    return _DECIMAL_PAGE.sub(r"\1", text or "")

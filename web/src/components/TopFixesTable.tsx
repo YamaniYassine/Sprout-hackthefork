@@ -8,6 +8,10 @@ import MoreInfoPanel from "./MoreInfoPanel";
 
 const MAX_QUOTES_SHOWN = 2;
 
+function papers(n: number): string {
+  return `${n} ${n === 1 ? "paper" : "papers"}`;
+}
+
 function CleanLabelChip({ tier }: { tier: 0 | 1 | 2 }) {
   const c = CLEAN_LABEL_COLORS[tier];
   return (
@@ -93,16 +97,19 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
         </p>
       </div>
 
-      <table className="w-full text-sm">
+      {/* table-fixed: column widths no longer depend on the content of an opened row */}
+      <table className="w-full table-fixed text-sm">
         <thead>
           <tr className="bg-sprout-cream text-sprout-green text-left border-b border-sprout-paleSage">
-            <th className="px-6 py-3 font-bold w-12 uppercase text-[11px] tracking-widest">#</th>
-            <th className="px-6 py-3 font-bold uppercase text-[11px] tracking-widest">Off-taste molecule</th>
-            <th className="px-6 py-3 font-bold uppercase text-[11px] tracking-widest">
+            <th className="px-6 py-3 font-bold w-20 uppercase text-[11px] tracking-widest">#</th>
+            <th className="px-6 py-3 font-bold w-[30%] uppercase text-[11px] tracking-widest">
+              Off-taste molecule
+            </th>
+            <th className="px-6 py-3 font-bold w-[34%] uppercase text-[11px] tracking-widest">
               Recommended additive / process
             </th>
             <th className="px-6 py-3 font-bold uppercase text-[11px] tracking-widest">Impact</th>
-            <th className="px-6 py-3 w-8"></th>
+            <th className="px-4 py-3 w-14"></th>
           </tr>
         </thead>
         <tbody>
@@ -117,12 +124,14 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                   onClick={() => setOpenRank(isOpen ? null : rank)}
                   className="border-t border-sprout-paleSage/60 bg-white hover:bg-sprout-cream cursor-pointer"
                 >
-                  <td className="px-6 py-4 font-display text-xl font-bold text-sprout-green">{rank}</td>
+                  <td className="px-6 py-4 font-display text-xl font-bold text-sprout-green">
+                    {rank}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="font-semibold text-sprout-dark">{offNote.molecule}</div>
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
                       <FamilyChip family={offNote.family} />
-                      <span className="text-xs text-sprout-midSage">{offNote.n_papers} paper(s)</span>
+                      <span className="text-xs text-sprout-midSage">{papers(offNote.n_papers)}</span>
                       {offNote.scope === "general" && (
                         <span className="text-xs text-sprout-midSage italic">general plant protein</span>
                       )}
@@ -132,8 +141,10 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                     {lever ? (
                       <>
                         <div className="font-semibold text-sprout-dark">{lever.name}</div>
-                        <div className="text-xs text-sprout-midSage mt-0.5 capitalize">
-                          {lever.kind} &middot; {lever.cost_tier} cost &middot; {lever.n_papers} paper(s)
+                        <div className="text-xs text-sprout-midSage mt-0.5">
+                          <span className="capitalize">{lever.kind}</span> &middot;{" "}
+                          <span className="capitalize">{lever.cost_tier}</span> cost &middot;{" "}
+                          {papers(lever.n_papers)}
                         </div>
                       </>
                     ) : (
@@ -143,7 +154,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                   <td className="px-6 py-4">
                     <ImpactBar score={offNote.evidence_score} max={maxScore} />
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-4">
                     <Chevron open={isOpen} />
                   </td>
                 </tr>

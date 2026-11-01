@@ -108,7 +108,7 @@ export default function Header({
             Plant-based flavor gap analysis
           </p>
           <h1 className="font-display text-4xl font-bold text-sprout-cream mt-1.5">Sprout</h1>
-          <p className="mt-2 max-w-2xl text-sm text-sprout-mint">
+          <p className="mt-2 max-w-3xl text-sm text-sprout-mint">
             Mines the scientific literature for masking agents and scores them for taste, clean
             label and CO&#8322; footprint.
           </p>
