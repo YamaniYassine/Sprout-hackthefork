@@ -14,11 +14,13 @@ type HeaderProps = {
 function Dropdown({
   label,
   options,
+  comingSoon = [],
   value,
   onChange,
 }: {
   label: string;
   options: string[];
+  comingSoon?: string[];
   value: string;
   onChange: (v: string) => void;
 }) {
@@ -33,6 +35,11 @@ function Dropdown({
         {options.map((opt) => (
           <option key={opt} value={opt} className="capitalize">
             {opt}
+          </option>
+        ))}
+        {comingSoon.map((opt) => (
+          <option key={opt} value={opt} disabled className="capitalize text-gray-400">
+            {opt} (coming soon)
           </option>
         ))}
       </select>
@@ -63,8 +70,20 @@ export default function Header({
         </div>
 
         <div className="flex flex-wrap items-end gap-4">
-          <Dropdown label="Plant protein" options={proteins} value={protein} onChange={onProteinChange} />
-          <Dropdown label="Meat target" options={targets} value={target} onChange={onTargetChange} />
+          <Dropdown
+            label="Plant protein"
+            options={proteins}
+            comingSoon={["mycoprotein", "chickpea"]}
+            value={protein}
+            onChange={onProteinChange}
+          />
+          <Dropdown
+            label="Meat target"
+            options={targets}
+            comingSoon={["pork", "fish"]}
+            value={target}
+            onChange={onTargetChange}
+          />
 
           <div className="flex items-center gap-2">
             <button
