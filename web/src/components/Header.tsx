@@ -53,7 +53,7 @@ export default function Header({
   source,
 }: HeaderProps) {
   return (
-    <header className="border-b border-emerald-200 bg-gradient-to-r from-emerald-50 to-white">
+    <header className="bg-white border-b-2 border-emerald-500">
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-end justify-between gap-4">
         <div className="flex items-end gap-3">
           <h1 className="text-2xl font-bold text-emerald-900">Sprout</h1>

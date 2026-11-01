@@ -60,7 +60,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-emerald-50/40">
+    <div className="min-h-screen bg-white">
       <Header
         proteins={options?.proteins ?? []}
         targets={options?.targets ?? []}

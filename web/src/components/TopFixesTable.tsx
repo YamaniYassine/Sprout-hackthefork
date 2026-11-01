@@ -95,7 +95,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-emerald-50 text-emerald-800 text-left">
+          <tr className="bg-white text-emerald-800 text-left border-b border-emerald-200">
             <th className="px-5 py-2.5 font-semibold w-12">#</th>
             <th className="px-5 py-2.5 font-semibold">Off-taste molecule</th>
             <th className="px-5 py-2.5 font-semibold">Recommended additive / process</th>
@@ -113,7 +113,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
               <Fragment key={offNote.molecule}>
                 <tr
                   onClick={() => setOpenRank(isOpen ? null : rank)}
-                  className="border-t border-emerald-100 hover:bg-emerald-50/50 cursor-pointer"
+                  className="border-t border-gray-100 bg-white hover:bg-emerald-50/40 cursor-pointer"
                 >
                   <td className="px-5 py-3 font-bold text-emerald-700">{rank}</td>
                   <td className="px-5 py-3">
@@ -147,7 +147,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                 </tr>
 
                 {isOpen && (
-                  <tr className="bg-emerald-50/30 border-t border-emerald-100">
+                  <tr className="bg-gray-50 border-t border-gray-100">
                     <td></td>
                     <td colSpan={4} className="px-5 py-4">
                       <div className="grid grid-cols-3 gap-5">
