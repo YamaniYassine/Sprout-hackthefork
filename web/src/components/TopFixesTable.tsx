@@ -38,6 +38,29 @@ function Co2Chip({ impact }: { impact: Co2Impact }) {
   );
 }
 
+// Same bands as co2BandColor in theme.ts: low < 35, medium 35-74, high >= 75
+function Co2Gauge({ score }: { score: number }) {
+  const pct = Math.max(0, Math.min(100, score));
+  return (
+    <div className="mt-2 mb-1">
+      <div className="relative flex h-2.5 rounded-full">
+        <div className="h-full w-[35%] bg-sprout-mint rounded-l-full" />
+        <div className="h-full w-[40%] bg-amber-200" />
+        <div className="h-full w-[25%] bg-red-200 rounded-r-full" />
+        <div
+          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-sprout-dark border-2 border-white shadow"
+          style={{ left: `${pct}%` }}
+        />
+      </div>
+      <div className="flex mt-1.5 text-[10px] uppercase tracking-widest text-sprout-midSage">
+        <span className="w-[35%]">low</span>
+        <span className="w-[40%] text-center">medium</span>
+        <span className="w-[25%] text-right">high</span>
+      </div>
+    </div>
+  );
+}
+
 function FamilyChip({ family }: { family: string }) {
   const color = familyColor(family);
   return (
@@ -212,6 +235,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                               <div>
                                 <Co2Chip impact={lever.co2_impact} />
                               </div>
+                              <Co2Gauge score={lever.co2_impact.score} />
                               <p className="text-xs text-sprout-sage italic">{lever.co2_impact.rationale}</p>
                             </div>
                           ) : (
