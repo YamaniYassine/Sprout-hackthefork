@@ -17,14 +17,14 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-3 pt-3 border-t border-emerald-200/60">
+    <div className="mt-3 pt-3 border-t border-sprout-paleSage">
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 underline"
+        className="text-xs font-semibold text-sprout-green hover:text-sprout-deepGreen underline"
       >
         {open ? "Hide more info" : "More info"}
       </button>
@@ -32,8 +32,10 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
       {open && (
         <div className="mt-3 grid grid-cols-3 gap-5">
           <div>
-            <div className="text-xs font-semibold text-emerald-800 mb-1.5">Cited explanation</div>
-            <p className="text-xs text-emerald-900 leading-relaxed">
+            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
+              Cited explanation
+            </div>
+            <p className="text-xs text-sprout-deepGreen leading-relaxed">
               {analysis.explanation.text || "No explanation available for this scenario."}
             </p>
             {!analysis.explanation.citations_valid && (
@@ -44,8 +46,8 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-emerald-800 mb-1.5">Limits</div>
-            <ul className="text-xs text-emerald-900 list-disc pl-4 space-y-0.5">
+            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">Limits</div>
+            <ul className="text-xs text-sprout-deepGreen list-disc pl-4 space-y-0.5">
               {analysis.limits.map((limit, i) => (
                 <li key={i}>{limit}</li>
               ))}
@@ -53,7 +55,7 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-emerald-800 mb-1.5">
+            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
               Missing vs. meat (molecules entirely absent from the plant base)
             </div>
             {analysis.missing_notes.length === 0 ? (

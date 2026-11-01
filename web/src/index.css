@@ -1,12 +1,40 @@
 @import "tailwindcss";
 
+/*
+ * Brand palette and type, extracted from the Sprout pitch deck
+ * (~/Sprout_Hackathon_Pitch_final.pptx theme):
+ *   dk1 #12291E  lt1 #F5F8F1  dk2 #4B5D53  lt2 #DEE3DC
+ *   accent1 #2F7A4A  accent2 #A6E07A  accent3 #3D5246
+ *   accent4 #C9DCCD  accent5 #5A6E61  accent6 #9DB5A4
+ *   headings: Fraunces (serif)   body: DM Sans (sans)
+ */
+@theme {
+  --font-display: "Fraunces", serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+
+  --color-sprout-dark: #12291e;
+  --color-sprout-cream: #f5f8f1;
+  --color-sprout-sage: #4b5d53;
+  --color-sprout-paleSage: #dee3dc;
+  --color-sprout-green: #2f7a4a;
+  --color-sprout-lime: #a6e07a;
+  --color-sprout-deepGreen: #3d5246;
+  --color-sprout-mint: #c9dccd;
+  --color-sprout-midSage: #5a6e61;
+  --color-sprout-softSage: #9db5a4;
+}
+
 html, body, #root {
   min-height: 100vh;
 }
 
 body {
   margin: 0;
-  background: #f8fafc;
-  color: #1f2937;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  background: #ffffff;
+  color: var(--color-sprout-dark);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
 }

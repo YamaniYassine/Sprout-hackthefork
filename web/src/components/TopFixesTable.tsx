@@ -50,10 +50,10 @@ function ImpactBar({ score, max }: { score: number; max: number }) {
   const pct = max > 0 ? Math.min(100, (score / max) * 100) : 0;
   return (
     <div className="flex items-center gap-2">
-      <div className="w-24 h-2 rounded-full bg-emerald-100 overflow-hidden">
-        <div className="h-full bg-emerald-600" style={{ width: `${pct}%` }} />
+      <div className="w-24 h-2 rounded-full bg-sprout-mint overflow-hidden">
+        <div className="h-full bg-sprout-green" style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-xs text-emerald-700 font-mono">{score.toFixed(2)}</span>
+      <span className="text-xs text-sprout-deepGreen font-mono">{score.toFixed(2)}</span>
     </div>
   );
 }
@@ -63,7 +63,7 @@ function Chevron({ open }: { open: boolean }) {
     <svg
       viewBox="0 0 20 20"
       fill="currentColor"
-      className={"w-4 h-4 text-emerald-500 transition-transform " + (open ? "rotate-180" : "")}
+      className={"w-4 h-4 text-sprout-green transition-transform " + (open ? "rotate-180" : "")}
     >
       <path
         fillRule="evenodd"
@@ -84,10 +84,10 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
   }
 
   return (
-    <div className="bg-white border border-emerald-200 rounded-xl shadow-sm overflow-hidden">
-      <div className="px-5 py-4 border-b border-emerald-100">
-        <h2 className="text-lg font-bold text-emerald-900">Top 5 fixes</h2>
-        <p className="text-sm text-emerald-700/80 mt-0.5">
+    <div className="bg-white border border-sprout-paleSage rounded-xl shadow-sm overflow-hidden">
+      <div className="px-5 py-4 border-b border-sprout-paleSage">
+        <h2 className="font-display text-lg font-bold text-sprout-dark">Top 5 fixes</h2>
+        <p className="text-sm text-sprout-sage mt-0.5">
           The strongest off-taste molecules found in the plant protein, and the best-supported
           plant-only additive or process to fix each one. Click a row for the supporting evidence.
         </p>
@@ -95,11 +95,13 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
 
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-white text-emerald-800 text-left border-b border-emerald-200">
-            <th className="px-5 py-2.5 font-semibold w-12">#</th>
-            <th className="px-5 py-2.5 font-semibold">Off-taste molecule</th>
-            <th className="px-5 py-2.5 font-semibold">Recommended additive / process</th>
-            <th className="px-5 py-2.5 font-semibold">Impact</th>
+          <tr className="bg-white text-sprout-green text-left border-b border-sprout-paleSage">
+            <th className="px-5 py-2.5 font-semibold w-12 uppercase text-xs tracking-wide">#</th>
+            <th className="px-5 py-2.5 font-semibold uppercase text-xs tracking-wide">Off-taste molecule</th>
+            <th className="px-5 py-2.5 font-semibold uppercase text-xs tracking-wide">
+              Recommended additive / process
+            </th>
+            <th className="px-5 py-2.5 font-semibold uppercase text-xs tracking-wide">Impact</th>
             <th className="px-5 py-2.5 w-8"></th>
           </tr>
         </thead>
@@ -113,14 +115,14 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
               <Fragment key={offNote.molecule}>
                 <tr
                   onClick={() => setOpenRank(isOpen ? null : rank)}
-                  className="border-t border-gray-100 bg-white hover:bg-emerald-50/40 cursor-pointer"
+                  className="border-t border-gray-100 bg-white hover:bg-sprout-cream cursor-pointer"
                 >
-                  <td className="px-5 py-3 font-bold text-emerald-700">{rank}</td>
+                  <td className="px-5 py-3 font-display font-bold text-sprout-green">{rank}</td>
                   <td className="px-5 py-3">
-                    <div className="font-medium text-emerald-950">{offNote.molecule}</div>
+                    <div className="font-medium text-sprout-dark">{offNote.molecule}</div>
                     <div className="mt-1 flex items-center gap-2">
                       <FamilyChip family={offNote.family} />
-                      <span className="text-xs text-emerald-600">{offNote.n_papers} paper(s)</span>
+                      <span className="text-xs text-sprout-midSage">{offNote.n_papers} paper(s)</span>
                       {offNote.scope === "general" && (
                         <span className="text-xs text-slate-400 italic">general plant protein</span>
                       )}
@@ -129,8 +131,8 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                   <td className="px-5 py-3">
                     {lever ? (
                       <>
-                        <div className="font-medium text-emerald-950">{lever.name}</div>
-                        <div className="text-xs text-emerald-600 mt-0.5 capitalize">
+                        <div className="font-medium text-sprout-dark">{lever.name}</div>
+                        <div className="text-xs text-sprout-midSage mt-0.5 capitalize">
                           {lever.kind} &middot; {lever.cost_tier} cost &middot; {lever.n_papers} paper(s)
                         </div>
                       </>
@@ -147,17 +149,17 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                 </tr>
 
                 {isOpen && (
-                  <tr className="bg-gray-50 border-t border-gray-100">
+                  <tr className="bg-sprout-cream border-t border-gray-100">
                     <td></td>
                     <td colSpan={4} className="px-5 py-4">
                       <div className="grid grid-cols-3 gap-5">
                         <div>
-                          <div className="text-xs font-semibold text-emerald-800 mb-1.5">
+                          <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
                             Why this molecule is flagged
                           </div>
                           <div className="flex flex-col gap-1.5">
                             {offNote.oav !== null && (
-                              <div className="text-xs text-emerald-700">
+                              <div className="text-xs text-sprout-deepGreen">
                                 <span className="font-medium">Odor activity value (OAV):</span>{" "}
                                 <span className="font-mono">{offNote.oav}</span>
                               </div>
@@ -170,7 +172,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                         </div>
 
                         <div>
-                          <div className="text-xs font-semibold text-emerald-800 mb-1.5">
+                          <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
                             Why this fix is recommended
                           </div>
                           {lever ? (
@@ -191,7 +193,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                         </div>
 
                         <div>
-                          <div className="text-xs font-semibold text-emerald-800 mb-1.5">
+                          <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
                             CO2 impact
                           </div>
                           {lever ? (
@@ -199,9 +201,7 @@ export default function TopFixesTable({ analysis }: { analysis: Analysis }) {
                               <div>
                                 <Co2Chip impact={lever.co2_impact} />
                               </div>
-                              <p className="text-xs text-emerald-700/80 italic">
-                                {lever.co2_impact.rationale}
-                              </p>
+                              <p className="text-xs text-sprout-sage italic">{lever.co2_impact.rationale}</p>
                             </div>
                           ) : (
                             <span className="text-slate-400 italic text-xs">
