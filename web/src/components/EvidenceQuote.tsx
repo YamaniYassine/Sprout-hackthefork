@@ -15,8 +15,8 @@ function OriginBadge({ origin }: { origin: string }) {
 
 export default function EvidenceQuote({ evidence }: { evidence: Evidence }) {
   return (
-    <div className="text-xs text-sprout-deepGreen bg-white border border-sprout-paleSage rounded-lg px-3 py-2">
-      <p className="italic">&ldquo;{evidence.quote}&rdquo;</p>
+    <div className="text-xs text-sprout-deepGreen bg-sprout-cream border border-sprout-paleSage border-l-4 border-l-sprout-green rounded-xl px-3 py-2.5">
+      <p className="font-display italic text-[13px] leading-snug text-sprout-dark">&ldquo;{evidence.quote}&rdquo;</p>
       <div className="flex items-center gap-2 mt-1.5 text-sprout-midSage">
         <span className="font-medium">
           {evidence.file} p.{evidence.page ?? "?"}

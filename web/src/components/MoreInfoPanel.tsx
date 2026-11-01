@@ -17,22 +17,22 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-3 pt-3 border-t border-sprout-paleSage">
+    <div className="mt-4 pt-4 border-t border-sprout-paleSage">
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className="text-xs font-semibold text-sprout-green hover:text-sprout-deepGreen underline"
+        className="text-[11px] font-bold tracking-widest uppercase text-sprout-green hover:text-sprout-deepGreen underline underline-offset-4"
       >
         {open ? "Hide more info" : "More info"}
       </button>
 
       {open && (
-        <div className="mt-3 grid grid-cols-3 gap-5">
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
+        <div className="mt-4 grid grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl border border-sprout-paleSage p-4">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-sprout-green mb-2">
               Cited explanation
             </div>
             <p className="text-xs text-sprout-deepGreen leading-relaxed">
@@ -45,8 +45,8 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
             )}
           </div>
 
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">Limits</div>
+          <div className="bg-white rounded-xl border border-sprout-paleSage p-4">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-sprout-green mb-2">Limits</div>
             <ul className="text-xs text-sprout-deepGreen list-disc pl-4 space-y-0.5">
               {analysis.limits.map((limit, i) => (
                 <li key={i}>{limit}</li>
@@ -54,12 +54,12 @@ export default function MoreInfoPanel({ analysis }: { analysis: Analysis }) {
             </ul>
           </div>
 
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-sprout-green mb-1.5">
+          <div className="bg-white rounded-xl border border-sprout-paleSage p-4">
+            <div className="text-[11px] font-bold uppercase tracking-widest text-sprout-green mb-2">
               Missing vs. meat (molecules entirely absent from the plant base)
             </div>
             {analysis.missing_notes.length === 0 ? (
-              <span className="text-slate-400 italic text-xs">
+              <span className="text-sprout-midSage italic text-xs">
                 No evidence found in the corpus.
               </span>
             ) : (
